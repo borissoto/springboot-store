@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout">
+
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <!-- Meta, title, CSS, favicons, etc. -->
+    <meta charset="utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+
+    <title data-layout-title-pattern="$LAYOUT_TITLE | $CONTENT_TITLE">Sistema de Almacenes</title>
+
+    <!-- Bootstrap -->
+    <link href="/webjars/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet"/>
+    <!-- Font Awesome -->
+    <link href="/webjars/font-awesome/4.6.1/css/font-awesome.min.css" rel="stylesheet"/>
+    <!-- NProgress -->
+    <link href="/webjars/nprogress/0.2.0/nprogress.css" rel="stylesheet"/>
+    <!--DataTables-->
+    <link href="/webjars/datatables/1.10.13/css/jquery.dataTables.min.css" rel="stylesheet"/>
+    <!--DatePicker-->
+    <link href="/webjars/bootstrap-datepicker/1.6.4/css/bootstrap-datepicker3.min.css" rel="stylesheet"/>
+    <!--PNotify-->
+   <!-- <link href="/webjars/pnotify/3.0.0/dist/pnotify.css" rel="stylesheet"/>-->
+ <!--   <link href="/webjars/pnotify/3.0.0/dist/pnotify.buttons.css" rel="stylesheet"/>
+    <link href="/webjars/pnotify/3.0.0/dist/pnotify.nonblock.js" rel="stylesheet"/>-->
+
+    <!-- Custom Theme Style -- Cambiarlo a min.css -->
+    <link href="/css/custom.css" rel="stylesheet"/>
+</head>
+
+<body class="nav-md">
+<div class="container body">
+    <div class="main_container">
+        <div class="col-md-3 left_col">
+            <div class="left_col scroll-view">
+                <div class="navbar nav_title" style="border: 0;">
+                    <a href="index.html" class="site_title"><i class="fa fa-paw"></i>
+                        <span>ALMACEN</span></a>
+                </div>
+
+                <div class="clearfix"></div>
+
+                <!-- menu profile quick info -->
+                <!--<div data-th-replace="fragments/fragment-menu-profile-quick-info :: menu-profile-quick-info"></div>-->
+                <!-- /menu profile quick info -->
+
+                <br/>
+
+                <!-- sidebar menu -->
+                <div data-th-replace="fragments/fragment-sidebar-menu :: sidebar-menu"></div>
+                <!-- /sidebar menu -->
+
+                <!-- /menu footer buttons -->
+                <!--<div data-th-replace="fragments/fragment-menu-footer-buttons :: menu-footer-buttons"></div>-->
+                <!-- /menu footer buttons -->
+
+            </div>
+        </div>
+
+        <!-- top navigation -->
+        <div data-th-replace="fragments/fragment-top-navigation :: top-navigation"></div>
+        <!-- /top navigation -->
+
+        <!-- page content -->
+        <!--<div layout:fragment="content"></div>-->
+        <div data-layout-fragment="content"></div>
+        <!-- /page content -->
+
+        <!-- footer content -->
+        <!--<div layout:fragment="fragments/fragment-footer-content"-->
+        <div data-th-replace="fragments/fragment-footer-content :: footer-content"></div>
+        <!-- /footer content -->
+    </div>
+</div>
+
+<!-- jQuery -->
+<script src="/webjars/jquery/2.2.3/jquery.min.js"></script>
+<!-- Bootstrap -->
+<script src="/webjars/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<!-- FastClick -->
+<script src="/webjars/fastclick/1.0.6/fastclick.js"></script>
+<!-- NProgress -->
+<script src="/webjars/nprogress/0.2.0/nprogress.js"></script>
+<!-- DataTables -->
+<script src="/webjars/datatables/1.10.13/js/jquery.dataTables.min.js"></script>
+<!-- DatePicker -->
+<script src="/webjars/bootstrap-datepicker/1.6.4/js/bootstrap-datepicker.min.js"></script>
+<script src="/webjars/bootstrap-datepicker/1.6.4/locales/bootstrap-datepicker.es.min.js"></script>
+<!-- PNotify -->
+<!--<script src="/webjars/pnotify/3.0.0/dist/pnotify.js"></script>-->
+<!--<script src="/webjars/pnotify/3.0.0/dist/pnotify.buttons.js"></script>
+<script src="/webjars/pnotify/3.0.0/dist/pnotify.nonblock.js"></script>-->
+
+<!-- Custom Theme Scripts -->
+<script src="/js/custom.min.js"></script>
+
+<script src="/js/almacen.js"></script>
+
+</body>
+</html>

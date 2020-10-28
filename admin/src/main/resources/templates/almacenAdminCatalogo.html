@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      data-layout-decorate="~{fragments/layout}">
+
+<head>
+    <meta charset="UTF-8"/>
+    <title>Administracion de Almacenes</title>
+</head>
+<body>
+
+<div class="right_col" role="main" data-layout-fragment="content">
+    <!--<div class="page-title">
+        <div class="title_left">
+            <h3>Administracion de Almacenes</h3>
+        </div>
+        <div class="title_right">
+            <div class="col-md-5 col-sm-5 col-xs-12 form-group pull-right top_search">
+                <div class="input-group">
+                    <input type="text" class="form-control" placeholder="Search for..."/>
+                    <span class="input-group-btn">
+                      <button class="btn btn-default" type="button">Go!</button>
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>-->
+
+    <div class="clearfix"></div>
+
+    <nav class="navbar navbar-default">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <a class="navbar-brand" href="#">Administracion</a>
+            </div>
+            <ul class="nav navbar-nav">
+                <li class="active"> <a href="/admin/catalogos">Categorias</a></li>
+                <li> <a href="/admin/categorias">Sub-Categorias</a></li>
+                <li> <a href="/admin/unidades">Unidades de Medida</a></li>
+                <li> <a href="/admin/documentos">Tipos de Ingreso</a></li>
+                <li> <a href="/admin/sedes">Sucursales</a></li>
+                <li> <a href="/admin/variables">Configuracion</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="col-md-12 col-sm-12 col-xs-12">
+        <div class="x_panel">
+            <div class="x_title">
+                <h2><i class="fa fa-circle"></i> Categorias
+                    <small></small>
+                </h2>
+                <ul class="nav navbar-right panel_toolbox">
+                   <li>
+                       <button id="nuevo-catalogo" class="btn btn-success btn-sm"><i class="fa fa-plus"> Nuevo Categoria</i>
+                        </button>
+                   </li>
+
+                   <!-- <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+                    </li>
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><i class="fa fa-wrench"></i></a>
+                        <ul class="dropdown-menu" role="menu">
+                            <li><a href="#">Settings 1</a>
+                            </li>
+                            <li><a href="#">Settings 2</a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li><a class="close-link"><i class="fa fa-close"></i></a>
+                    </li>-->
+                </ul>
+                <div class="clearfix"></div>
+            </div>
+            <div class="x_content">
+
+
+                <div class="table-responsive"
+                     style="padding:2px;border-style: solid; border-width:thin; border-radius: 4px;border-color: #333333">
+                    <table class="display compact" id="tabla-catalogo">
+                        <thead>
+                        <tr>
+                            <th></th>
+                            <th>Codigo</th>
+                            <th>Nombre Categoria</th>
+                            <th>Descripcion</th>
+                            <th>Acciones</th>
+                        </tr>
+                        </thead>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!--MODALs Nuevo Categoria-->
+    <div id="modalNuevoCatalogo" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog modal-sm">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span>
+                    </button>
+                    <h4 class="modal-title" id="modalLabelNuevo">Nueva Categoria</h4>
+                </div>
+                <form action="#" th:action="@{catalogo/guardar}" th:object="${AlmacenCatalogo}" method="post">
+                    <div class="modal-body">
+                        <label> Nombre de la Categoria</label>
+                        <input type="text" th:field="*{catalogo}" class="form-control" placeholder="Nombre de la Categoria"/>
+                        <label>Descripcion</label>
+                        <textarea type="text" th:field="*{descripcion}" class="form-control" placeholder="Descripcion de la Categoria"></textarea>
+
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
+                        <button type="submit" class="btn btn-primary" >Guardar</button>
+                    </div>
+                </form>
+
+            </div>
+        </div>
+    </div>
+
+
+    <!--MODALs Editar Categoria-->
+
+    <div id="modalEditarCatalogo" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog modal-sm">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span>
+                    </button>
+                    <h4 class="modal-title" id="modalLabelEditar">Editar Categoria</h4>
+                </div>
+                <!--<div th:value="catalogoid" </div>-->
+                <form id="form-edit-catalogo" action="get_action()"  th:object="${AlmacenCatalogo}" method="post">
+                    <div class="modal-body">
+                        <label>Codigo </label>
+                        <div th:id="editar-catalogo-codigo"></div>
+                        <label> Nombre de la Categoria</label>
+                        <input th:id="editar-catalogo-nombre" type="text" th:field="*{catalogo}" class="form-control" placeholder="Nombre de la Categoria"/>
+                        <label>Descripcion</label>
+                        <textarea th:id="editar-catalogo-descripcion" type="text" th:field="*{descripcion}" class="form-control" placeholder="Descripcion de la Categoria"></textarea>
+
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
+                        <button id="submit-edit-catalogo" type="submit" class="btn btn-primary" >Guardar</button>
+                    </div>
+                </form>
+
+            </div>
+        </div>
+    </div>
+
+    <!--MODALs VER Categoria-->
+    <div id="modalVerCatalogo" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true">
+            <div class="modal-dialog modal-sm">
+                <div class="modal-content">
+
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span>
+                        </button>
+                        <h4 class="modal-title" id="myModalLabel2">Detalle Categoria</h4>
+                    </div>
+
+                    <div class="modal-body">
+                        <label>Codigo de la Categoria</label>
+                        <h6 id="ver-catalogo-codigo"> </h6>
+                        <label>Nombre de la Categoria</label>
+                        <h6 id="ver-catalogo-nombre"> </h6>
+                        <label>Descripcion</label>
+                        <h6 id="ver-catalogo-descripcion"></h6>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Aceptar</button>
+                    </div>
+
+                </div>
+            </div>
+    </div>
+
+    <!--MODALs Eliminar Catalogo-->
+
+    <div id="modalEliminarCatalogo" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog modal-sm">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span>
+                    </button>
+                    <h4 class="modal-title" id="modalLabelEliminar">Eliminar Catalogo</h4>
+                </div>
+                <!--<div th:value="catalogoid" </div>-->
+                <form id="form-eliminar-catalogo" action="get_action()" method="post">
+                    <div class="modal-body">
+                        <label style="color:red;"> Esta Seguro Que Desea Eliminar la Categoria?  Codigo:
+                            <span th:id="eliminar-catalogo-codigo"></span>
+                        </label>
+                        <label> Nombre de la Categoria</label>
+                        <input th:id="eliminar-catalogo-nombre" type="text" readonly="readonly" class="form-control" placeholder="Nombre de la Categoria"/>
+                        <label>Descripcion</label>
+                        <textarea th:id="eliminar-catalogo-descripcion" type="text" class="form-control" readonly="readonly" placeholder="Descripcion de la Categoria"></textarea>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
+                        <button id="submit-eliminar-catalogo" type="submit" class="btn btn-danger" >Eliminar</button>
+                    </div>
+                </form>
+
+            </div>
+        </div>
+    </div>
+
+
+
+
+
+
+</div>
+
+</body>
+</html>

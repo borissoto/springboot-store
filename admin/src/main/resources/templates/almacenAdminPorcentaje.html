@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      data-layout-decorate="~{fragments/layout}">
+
+<head>
+    <meta charset="UTF-8"/>
+    <title>Administracion de Almacenes</title>
+</head>
+<body>
+<div class="right_col" role="main" data-layout-fragment="content">
+    <!--<div class="page-title">
+        <div class="title_left">
+            <h3>Administracion de Almacenes</h3>
+        </div>
+        <div class="title_right">
+            <div class="col-md-5 col-sm-5 col-xs-12 form-group pull-right top_search">
+                <div class="input-group">
+                    <input type="text" class="form-control" placeholder="Search for..."/>
+                    <span class="input-group-btn">
+                      <button class="btn btn-default" type="button">Go!</button>
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>-->
+
+    <div class="clearfix"></div>
+
+    <nav class="navbar navbar-default">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <a class="navbar-brand" href="#">Productos</a>
+            </div>
+            <ul class="nav navbar-nav">
+                <li> <a href="/admin/productos">Lista de Productos</a></li>
+                <li class="active"> <a href="/admin/porcentajes">Porcentajes</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="col-md-12 col-sm-12 col-xs-12">
+        <div class="x_panel">
+            <div class="x_title">
+                <h2><i class="fa fa-square"></i> Productos
+                    <small>Porcentajes</small>
+                </h2>
+                <ul class="nav navbar-right panel_toolbox">
+                    <li>
+                        <!--<button id="nuevo-producto" class="btn btn-success btn-sm">
+                            <i class="fa fa-plus"> Nuevo Producto</i>
+                        </button>-->
+                    </li>
+
+                    <!-- <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+                     </li>
+                     <li class="dropdown">
+                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><i class="fa fa-wrench"></i></a>
+                         <ul class="dropdown-menu" role="menu">
+                             <li><a href="#">Settings 1</a>
+                             </li>
+                             <li><a href="#">Settings 2</a>
+                             </li>
+                         </ul>
+                     </li>
+                     <li><a class="close-link"><i class="fa fa-close"></i></a>
+                     </li>-->
+                </ul>
+                <div class="clearfix"></div>
+            </div>
+            <div class="x_content">
+
+                <div class="table-responsive"
+                     style="padding:2px;border-style: solid; border-width:thin; border-radius: 4px;border-color: #333333">
+                    <table class="display compact" id="tabla-prodporcentaje">
+                        <thead>
+                        <tr>
+                            <th></th>
+                            <th>SUB CATEGORIA</th>
+                            <th>CODIGO</th>
+                            <th>PRODUCTO</th>
+                            <th>PORCENTAJE</th>
+                            <th>PRECIO</th>
+                            <th>OFERTA</th>
+                            <th>CANTIDAD</th>
+                            <th>CARACTERISTICA</th>
+                            <th>UNIDAD</th>
+                            <th>ACCIONES</th>
+                        </tr>
+                        </thead>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!------------------------------------------------EDITAR PORCENTAJE ------------------------------------------------------>
+    <div id="modalEditarPorcentaje" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span>
+                    </button>
+                    <h4 class="modal-title">Porcentaje de Producto</h4>
+                </div><!--action="get_action()"-->
+                <form id="form-editar-porcentaje" class="form-horizontal" action="getAction()"  th:object="${AlmacenProducto}" method="post">
+                    <div class="modal-body">
+                        <div style="border:1px solid #e5e5e5; padding:10px 0px 04px 0px; ">
+                            <div class="form-group">
+                                <label class="control-label col-md-2 col-sm-2 col-xs-12">PORCENTAJE</label>
+                                <div class="col-md-2 col-sm-2 col-xs-12">
+                                    <input id="ingreso-cantidad" type="text" th:field="*{porcentaje}" class="form-control" placeholder="Cantidad Ingreso"/>
+                                </div>
+                            </div>
+                        </div>
+                        <table class="table table-condensed">
+                            <thead></thead>
+                            <tbody>
+                            <tr>
+                                <td colspan="5" style="background:#EAEAEA;">PRODUCTO</td>
+                            </tr>
+                            <tr>
+                                <td rowspan="11" align="center">
+                                    <img id="ingreso-producto-imagen" class="center-block img-thumbnail" alt="" height="150" width="150">
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>NOMBRE:</td>
+                                <td colspan="3">
+                                    <b id="ingreso-producto-nombre" style="text-transform:uppercase;"></b>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>CODIGO:</td>
+                                <td><b id="ingreso-producto-codigo"></b></td>
+                                <td>MARCA:</td>
+                                <td><b id="ingreso-producto-marca"></b></td>
+                            </tr>
+                            <tr>
+                                <td>PRECIO:</td>
+                                <td><b id="ingreso-producto-precio"></b></td>
+                                <td>OFERTA:</td>
+                                <td><b id="ingreso-producto-oferta"></b></td>
+                            </tr>
+                            <tr>
+                                <td>UNIDAD:</td>
+                                <td><b id="ingreso-producto-unidad"></b></td>
+                                <td>CARACTERISTICA:</td>
+                                <td><b id="ingreso-producto-caracteristica"></b></td>
+                            </tr>
+                            <tr>
+                                <td>DESCRIPCION:</td>
+                                <td colspan="3"><b id="ingreso-producto-descripcion"></b></td>
+                            </tr>
+                            <tr>
+                                <td colspan="4"  style="background:#EAEAEA;">ALMACENES</td>
+                            </tr>
+                            <tr>
+                                <td>ESTADO:</td>
+                                <td><b id="ingreso-producto-estado"></b></td>
+                                <td>PORCENTAJE:</td>
+                                <td><b id="ingreso-producto-porcentaje"></b>%</td>
+                            </tr>
+                            <tr>
+                                <td>CANTIDAD ALMACENES:</td>
+                                <td colspan="3"><b id="ingreso-producto-cantidad"></b>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><small>REGISTRO EN EL SISTEMA:</small></td>
+                                <td colspan="3">
+                                    <b><small id="ingreso-producto-sistema"></small>
+                                        <small> - ID:</small>
+                                        <small id="ingreso-producto-id"></small></b>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>USUARIO:</td>
+                                <td colspan="3"><b id="ingreso-producto-usuario"></b></td>
+                            </tr>
+                            </tbody>
+                        </table>
+
+
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
+                        <button type="submit" name="guardarProducto" class="btn btn-primary" >Guardar</button>
+                    </div>
+                </form>
+
+            </div>
+        </div>
+    </div>
+
+
+
+
+
+
+
+    <!--------------------------------------------------------------------MODALs VER Producto----------------------------------------------->
+    <div id="modalVerProducto" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span>
+                    </button>
+                    <h4 class="modal-title">Detalle Producto</h4>
+                </div>
+                <div class="modal-body">
+                    <table class="table table-condensed">
+                        <thead></thead>
+                        <tbody>
+                        <tr>
+                            <td colspan="5" style="background:#EAEAEA;">PRODUCTO</td>
+                        </tr>
+                        <tr>
+                            <td rowspan="11" align="center">
+                                <img id="ver-producto-imagen" class="center-block img-thumbnail" alt="" height="250" width="250">
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>NOMBRE:</td>
+                            <td colspan="3">
+                                <b id="ver-producto-nombre" style="text-transform:uppercase;"></b>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>CODIGO:</td>
+                            <td><b id="ver-producto-codigo"></b></td>
+                            <td>MARCA:</td>
+                            <td><b id="ver-producto-marca"></b></td>
+                        </tr>
+                        <tr>
+                            <td>PRECIO:</td>
+                            <td><b id="ver-producto-precio"></b></td>
+                            <td>OFERTA:</td>
+                            <td><b id="ver-producto-oferta"></b></td>
+                        </tr>
+                        <tr>
+                            <td>UNIDAD:</td>
+                            <td><b id="ver-producto-unidad"></b></td>
+                            <td>CARACTERISTICA:</td>
+                            <td><b id="ver-producto-caracteristica"></b></td>
+                        </tr>
+                        <tr>
+                            <td>DESCRIPCION:</td>
+                            <td colspan="3"><b id="ver-producto-descripcion"></b></td>
+                        </tr>
+                        <tr>
+                            <td colspan="4"  style="background:#EAEAEA;">ALMACENES</td>
+                        </tr>
+                        <tr>
+                            <td>ESTADO:</td>
+                            <td colspan="3"><b id="ver-producto-estado"></b></td>
+                        </tr>
+                        <tr>
+                            <td>CANTIDAD ALMACENES:</td>
+                            <td colspan="3"><b id="ver-producto-cantidad"></b>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><small>REGISTRO EN EL SISTEMA:</small></td>
+                            <td colspan="3">
+                                <b><small id="ver-producto-sistema"></small>
+                                    <small> - ID:</small>
+                                    <small id="ver-producto-id"></small></b>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>USUARIO:</td>
+                            <td colspan="3"><b id="ver-producto-usuario"></b></td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Aceptar</button>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <!--MODALs Eliminar Producto-->
+
+    <!-- <div id="modalEliminarProducto" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true">
+         <div class="modal-dialog modal-sm">
+             <div class="modal-content">
+                 <div class="modal-header">
+                     <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span>
+                     </button>
+                     <h4 class="modal-title">Eliminar Producto</h4>
+                 </div>
+                 &lt;!&ndash;<div th:value="catalogoid" </div>&ndash;&gt;
+                 <form id="form-eliminar-categoria" action="get_action()" method="post">
+                     <div class="modal-body">
+                         <label style="color:red;"> Esta Seguro Que Desea Eliminar el Producto?  ID:
+                             <span th:id="eliminar-categoria-id"></span>
+                         </label>
+                         <label>Nombre del Producto</label>
+                         <input th:id="eliminar-producto-nombre" type="text" readonly="readonly" class="form-control" />
+                         <label>Codigo</label>
+                         <input th:id="eliminar-producto-codigo" type="text" readonly="readonly" class="form-control" />
+                         <label>Descripcion</label>
+                         <textarea th:id="eliminar-producto-descripcion" type="text" class="form-control" readonly="readonly"></textarea>
+                         <label>Catalogo</label>
+                         <input th:id="eliminar-producto-catalogo" type="text" readonly="readonly" class="form-control" />
+                     </div>
+                     <div class="modal-footer">
+                         <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
+                         <button id="submit-eliminar-producto" type="submit" class="btn btn-danger" >Eliminar</button>
+                     </div>
+                 </form>
+
+             </div>
+         </div>
+     </div>-->
+
+
+</div>
+
+</body>
+</html>

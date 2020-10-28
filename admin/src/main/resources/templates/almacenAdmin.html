@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      data-layout-decorate="~{fragments/layout}">
+
+<head>
+    <meta charset="UTF-8"/>
+    <title>Administracion de Almacenes</title>
+</head>
+<body>
+<div class="right_col" role="main" data-layout-fragment="content">
+    <div class="page-title">
+        <div class="title_left">
+            <h3>Administracion de Almacenes</h3>
+        </div>
+
+        <div class="title_right">
+            <div class="col-md-5 col-sm-5 col-xs-12 form-group pull-right top_search">
+                <div class="input-group">
+                    <input type="text" class="form-control" placeholder="Search for..."/>
+                    <span class="input-group-btn">
+                      <button class="btn btn-default" type="button">Go!</button>
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="clearfix"></div>
+
+
+        <div class="col-md-12 col-sm-12 col-xs-12">
+            <div class="x_panel">
+               <div class="x_title">
+                    <!--<h2><i class="fa fa-bars"></i> Tabs <small>Float left</small></h2>-->
+
+                    <!--<ul class="nav navbar-right panel_toolbox">
+                        <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+                        </li>
+                        <li class="dropdown">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><i class="fa fa-wrench"></i></a>
+                            <ul class="dropdown-menu" role="menu">
+                                <li><a href="#">Settings 1</a>
+                                </li>
+                                <li><a href="#">Settings 2</a>
+                                </li>
+                            </ul>
+                        </li>
+                        <li><a class="close-link"><i class="fa fa-close"></i></a>
+                        </li>
+                    </ul>-->
+                    <div class="clearfix"></div>
+               </div>
+               <div class="x_content">
+
+
+                    <div class="" role="tabpanel" data-example-id="togglable-tabs">
+                        <ul id="myTab" class="nav nav-tabs bar_tabs" role="tablist">
+                            <li role="presentation" class="active">
+                                <a href="#tab_catalogo" id="tab-catalogo" role="tab" data-toggle="tab" aria-expanded="true">Catalogo </a>
+                            </li>
+                            <li role="presentation" class="">
+                                <a href="#tab_categoria" role="tab" id="tab-categoria" data-toggle="tab" aria-expanded="false">Categorias</a>
+                            </li>
+                            <li role="presentation" class="">
+                                <a href="#tab_unidad" role="tab" id="tab-almacenUnidad" data-toggle="tab" aria-expanded="false">Unidad de Medida</a>
+                            </li>
+                        </ul>
+
+                        <div id="myTabContent" class="tab-content">
+                            <div role="tabpanel" class="tab-pane fade active in" aria-labelledby="tab-catalogo" id="tab_catalogo">
+                                <!--<span align="left" >-->
+                                    <button id="nuevo-catalogo" class="btn btn-success btn-sm"  ><i class="fa fa-plus"> Nuevo Catalogo</i></button>
+                                <!--</span>-->
+                                <!---->
+
+                                <div class="table-responsive" style="padding:2px;border-style: solid; border-width:thin; border-radius: 4px;border-color: #5b90bf" >
+                                    <table class = "display compact" id="tabla-catalogo">
+                                        <thead>
+                                        <tr>
+                                            <th>Id</th>
+                                            <th>Nombre Catalogo</th>
+                                            <th>Descripcion</th>
+                                            <th>Acciones</th>
+                                        </tr>
+                                        </thead>
+                                    </table>
+                                </div>
+
+                            </div>
+                            <div role="tabpanel" class="tab-pane fade" aria-labelledby="tab-categoria" id="tab_categoria">
+                                <div class="table-responsive">
+                                    <table class = "table table-striped table-condensed" id="tabla-categoria">
+                                        <thead>
+                                        <tr>
+                                            <th>Id</th>
+                                            <th>Codigo</th>
+                                            <th>Nombre Categoria</th>
+                                            <th>Descripcion</th>
+                                            <th>Acciones</th>
+                                        </tr>
+                                        </thead>
+
+                                    </table>
+                                </div>
+                            </div>
+                            <div role="tabpanel" class="tab-pane fade"  aria-labelledby="tab-almacenUnidad" id="tab_unidad">
+                                <p>xxFood truck fixie locavore, accusamus mcsweeney's marfa nulla single-origin coffee squid. Exercitation +1 labore velit, blog sartorial PBR leggings next level wes anderson artisan four loko farm-to-table craft beer twee. Qui photo
+                                    booth letterpress, commodo enim craft beer mlkshk </p>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+<!--MODALs Nuevo Catalogo-->
+
+            <div id="modalNuevoCatalogo" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true">
+                <div class="modal-dialog modal-sm">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span>
+                            </button>
+                            <h4 class="modal-title" id="modalLabelNuevo">Nuevo Catalogo</h4>
+                        </div>
+                        <form action="#" th:action="@{administracion/catalogo/guardar}" th:object="${AlmacenCatalogo}" method="post">
+                        <div class="modal-body">
+                            <label> Nombre del Catalogo</label>
+                            <input type="text" th:field="*{catalogo}" class="form-control" placeholder="Nombre del Catalogo">
+                            <label>Descripcion</label>
+                            <input type="text" th:field="*{descripcion}" class="form-control" placeholder="Descripcion del Catalogo">
+
+                        </div>
+                        <div class="modal-footer">
+                            <!--<button type="button" class="btn btn-default" data-dismiss="modal">Aceptar</button>-->
+                            <button type="submit" class="btn btn-primary" >Aceptar</button>
+                        </div>
+                        </form>
+
+                    </div>
+                </div>
+            </div>
+
+
+
+
+
+<!--MODALs VER Catalogo-->
+
+            <div id="modalVerCatalogo" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true">
+                <div class="modal-dialog modal-sm">
+                    <div class="modal-content">
+
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span>
+                            </button>
+                            <h4 class="modal-title" id="myModalLabel2">Detalle Catalogo</h4>
+                        </div>
+
+                        <div class="modal-body">
+
+                            <label> Nombre de Catalogo</label>
+                            <span id="ver-catalogo-nombre">
+                            <label class="control-label col-md-2 col-sm-2 col-xs-12">Descripcion</label>
+                            <span id="ver-catalogo-descripcion">
+
+
+                        </div>
+
+                        <div class="modal-footer">
+                        <!--<button type="button" class="btn btn-default" data-dismiss="modal">Aceptar</button>-->
+                            <button type="button" class="btn btn-primary" data-dismiss="modal">Aceptar</button>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+
+
+
+
+    </div>
+
+</div>
+
+</body>
+</html>

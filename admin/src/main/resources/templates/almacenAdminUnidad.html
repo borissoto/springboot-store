@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      data-layout-decorate="~{fragments/layout}">
+
+<head>
+    <meta charset="UTF-8"/>
+    <title>Administracion de Almacenes</title>
+</head>
+<body>
+
+<div class="right_col" role="main" data-layout-fragment="content">
+
+
+    <!--<div class="page-title">
+        <div class="title_left">
+            <h3>Administracion de Almacenes</h3>
+        </div>
+        <div class="title_right">
+            <div class="col-md-5 col-sm-5 col-xs-12 form-group pull-right top_search">
+                <div class="input-group">
+                    <input type="text" class="form-control" placeholder="Search for..."/>
+                    <span class="input-group-btn">
+                      <button class="btn btn-default" type="button">Go!</button>
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>-->
+
+
+    <div class="clearfix"></div>
+
+    <nav class="navbar navbar-default">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <a class="navbar-brand" href="#">Administracion</a>
+            </div>
+            <ul class="nav navbar-nav">
+                <li> <a href="/admin/catalogos">Categorias</a></li>
+                <li> <a href="/admin/categorias">Sub-Categorias</a></li>
+                <li class="active"> <a href="/admin/unidades">Unidades de Medida</a></li>
+                <li> <a href="/admin/documentos">Tipos de Ingreso</a></li>
+                <li> <a href="/admin/sedes">Sucursales</a></li>
+                <li> <a href="/admin/variables">Configuracion</a></li>
+            </ul>
+        </div>
+    </nav>
+
+
+
+    <div class="col-md-12 col-sm-12 col-xs-12">
+        <div class="x_panel">
+            <div class="x_title">
+                <h2><i class="fa fa-circle"></i> Unidades de Medida
+                    <small></small>
+                </h2>
+                <ul class="nav navbar-right panel_toolbox">
+                    <li>
+                        <button id="nueva-unidad" class="btn btn-success btn-sm"><i class="fa fa-plus"> Nueva Unidad</i>
+                        </button>
+                    </li>
+
+                    <!-- <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+                     </li>
+                     <li class="dropdown">
+                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><i class="fa fa-wrench"></i></a>
+                         <ul class="dropdown-menu" role="menu">
+                             <li><a href="#">Settings 1</a>
+                             </li>
+                             <li><a href="#">Settings 2</a>
+                             </li>
+                         </ul>
+                     </li>
+                     <li><a class="close-link"><i class="fa fa-close"></i></a>
+                     </li>-->
+                </ul>
+                <div class="clearfix"></div>
+            </div>
+            <div class="x_content">
+
+
+                <div class="table-responsive"
+                     style="padding:2px;border-style: solid; border-width:thin; border-radius: 4px;border-color: #333333">
+                    <table class="display compact" id="tabla-unidad">
+                        <thead>
+                        <tr>
+                            <th></th>
+                            <th>ID</th>
+                            <th>Unidad</th>
+                            <th>Abreviatura</th>
+                            <th>Acciones</th>
+                        </tr>
+                        </thead>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!--MODALs Nueva Unidad-->
+    <div id="modalNuevaUnidad" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog modal-sm">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span>
+                    </button>
+                    <h4 class="modal-title" >Nueva Unidad de Medida</h4>
+                </div>
+                <form action="#" th:action="@{unidad/guardar}" th:object="${UnidadMedida}" method="post">
+                    <div class="modal-body">
+                        <label>Nombre de la Unidad</label>
+                        <input type="text" th:field="*{unidadMedida}" class="form-control" placeholder="Nombre de la Unidad de Medida"/>
+                        <label>Abreviatura</label>
+                        <input type="text" th:field="*{abreviatura}" class="form-control" placeholder="Abreviatura de la Unidad"/>
+
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
+                        <button type="submit" class="btn btn-primary" >Guardar</button>
+                    </div>
+                </form>
+
+            </div>
+        </div>
+    </div>
+
+
+    <!--MODALs EdiUtilsUnidadidad-->
+
+    <div id="modalEditarUnidad" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog modal-sm">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span>
+                    </button>
+                    <h4 class="modal-title" id="modalLabelEditar">Editar Unidad de Medida</h4>
+                </div>
+                <!--<div th:value="catalogoid" </div>-->
+                <form id="form-edit-unidad" action="get_action()"  th:object="${UnidadMedida}" method="post">
+                    <div class="modal-body">
+                        <label> Id </label>
+                        <div th:id="editar-unidad-id"></div>
+                        <label> Nombre de la Unidad</label>
+                        <input th:id="editar-unidad-nombre" type="text" th:field="*{unidadMedida}" class="form-control"/>
+                        <label>Abreviatura</label>
+                        <input th:id="editar-unidad-abreviatura" type="text" th:field="*{abreviatura}" class="form-control"/>
+
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
+                        <button id="submit-edit-catalogo" type="submit" class="btn btn-primary" >Guardar</button>
+                    </div>
+                </form>
+
+            </div>
+        </div>
+    </div>
+
+    <!--MODALs Ver unidad-->
+    <div id="modalVerUnidad" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog modal-sm">
+            <div class="modal-content">
+
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span>
+                    </button>
+                    <h4 class="modal-title" id="myModalLabel2">Detalle Unidad de Medida</h4>
+                </div>
+
+                <div class="modal-body">
+                    <label>Nombre de la Unidad</label>
+                    <h6 id="ver-unidad-nombre"> </h6>
+                    <label>Abreviatura</label>
+                    <h6 id="ver-unidad-abreviatura"></h6>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Aceptar</button>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <!--MODALs Eliminar Unidad-->
+
+    <div id="modalEliminarUnidad" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog modal-sm">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span>
+                    </button>
+                    <h4 class="modal-title" id="modalLabelEliminar">Eliminar Unidad de Medida</h4>
+                </div>
+                <!--<div th:value="catalogoid" </div>-->
+                <form id="form-eliminar-unidad" action="get_action()" method="post">
+                    <div class="modal-body">
+                        <label style="color:red;"> Esta Seguro Que Desea Eliminar la Unidad?  ID:
+                            <span th:id="eliminar-unidad-id"></span>
+                        </label>
+                        <label> Nombre del Catalogo</label>
+                        <input th:id="eliminar-unidad-nombre" type="text" readonly="readonly" class="form-control" />
+                        <label>Descripcion</label>
+                        <input th:id="eliminar-unidad-abreviatura" type="text" class="form-control" readonly="readonly"/>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
+                        <button id="submit-eliminar-unidad" type="submit" class="btn btn-danger" >Eliminar</button>
+                    </div>
+                </form>
+
+            </div>
+        </div>
+    </div>
+
+
+</div>
+
+</body>
+</html>

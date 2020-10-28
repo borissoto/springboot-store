@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      data-layout-decorate="~{fragments/layout}">
+
+<head>
+    <meta charset="UTF-8"/>
+    <title>Almacen Ingreso</title>
+</head>
+<body>
+<div class="right_col" role="main" data-layout-fragment="content">
+    <div class="page-title">
+        <div class="title_left">
+            <h3>Almacenes Ingreso</h3>
+        </div>
+        <!--<div class="title_right">
+            <div class="col-md-5 col-sm-5 col-xs-12 form-group pull-right top_search">
+                <div class="input-group">
+                    <input type="text" class="form-control" placeholder="Search for..."/>
+                    <span class="input-group-btn">
+                          <button class="btn btn-default" type="button">Go!</button>
+                        </span>
+                </div>
+            </div>
+        </div>-->
+    </div>
+
+    <div class="clearfix"></div>
+
+    <div class="col-md-12 col-sm-12 col-xs-12">
+        <div class="x_panel">
+            <div class="x_title">
+                <h2><i class="fa fa-file-text"></i> Comprobantes de Ingreso
+                    <small></small>
+                </h2>
+                <ul class="nav navbar-right panel_toolbox">
+                    <li>
+                        <a th:href="@{comprobante/nuevo}" class="btn btn-default">
+                        <i class="fa fa-plus"> Nuevo Ingreso</i></a>
+                    </li>
+                    <!--<li><a class="btn btn-success btn-sm"><i class="fa fa-plus"> Nuevo Ingreso</i></a>
+                    </li>-->
+                    <!--<li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button"
+                           aria-expanded="false"><i class="fa fa-wrench"></i></a>
+                        <ul class="dropdown-menu" role="menu">
+                            <li><a href="#">Configuracion 1</a>
+                            </li>
+                            <li><a href="#">Configuracion 2</a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li><a class="close-link"><i class="fa fa-close"></i></a>
+                    </li>-->
+                </ul>
+                <div class="clearfix"></div>
+            </div>
+            <div class="table-responsive"
+                 style="padding:2px;border-style: solid; border-width:thin; border-radius: 4px;border-color: #333333">
+                    <table class = "display compact" id="tabla-ingreso">
+                        <thead>
+                        <tr>
+                            <th></th>
+                            <th>REGISTRO</th>
+                            <th>PROVEEDOR</th>
+                            <th>FECHA</th>
+                            <th>DOCUMENTO</th>
+                            <th>SUCURSAL</th>
+                            <th>ACCIONES</th>
+                        </tr>
+                        </thead>
+
+                    </table>
+            </div>
+
+
+        </div>
+    </div>
+
+
+</div>
+
+</body>
+</html>

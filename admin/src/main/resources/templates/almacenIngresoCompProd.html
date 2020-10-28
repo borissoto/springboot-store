@@ -1,0 +1,635 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      data-layout-decorate="~{fragments/layout}">
+
+<head>
+    <meta charset="UTF-8"/>
+    <title>Almacen Nuevo Ingreso</title>
+</head>
+<body>
+<div class="right_col" role="main" data-layout-fragment="content">
+    <!--<div class="page-title">
+        <div class="title_left">
+            <h3>Ingreso de Producto a Almacenes</h3>
+        </div>
+    </div>-->
+    <div class="row">
+        <div class="col-md-12 col-sm-12 col-xs-12">
+            <div class="x_panel">
+                <div class="x_title">
+                    <h2>Comprobante de Ingreso</h2>
+                    <div class="clearfix"></div>
+                </div>
+                <div class="x_content">
+                    <div th:fragment="form-comprobante" xmlns:th="www.thymeleaf.org" th:remove="tag">
+                        <form class="form-horizontal" th:object="${Comprobante}" >
+                            <div class="form-group">
+                                <!--<input type="text" name="comprobanteId" th:value="${comprobanteId}"/>-->
+                                <label class="control-label col-md-2 col-sm-2 col-xs-12">Proveedor</label>
+                                <div class="col-md-3 col-sm-3 col-xs-12">
+                                    <input disabled th:value="*{proveedor}" type="text" class="form-control input-sm" placeholder="Proveedor"/>
+                                </div>
+
+                                <div class="col-md-2 col-sm-2 col-xs-12">
+                                    <div style="border: 1px solid #3399ff" >
+                                    <select disabled id="recibo" class="form-control input-sm" name="documentoId">
+                                        <option th:each="documento: ${todosDocumentos}" th:value="${documento.documentoId}" th:text="${documento.documento}"
+                                        th:selected="(${documento.documentoId} == *{almacenDocumento.documentoId})">
+                                            Documento
+                                        </option>
+                                    </select>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-2 col-sm-2 col-xs-12">
+                                    <div style="border: 1px solid #3399ff" >
+                                    <input disabled type="text"  th:value="*{nro_documento}" class="form-control input-sm" placeholder="Nro Documento"/>
+                                    </div>
+                                </div>
+
+                                <label class="control-label col-md-1 col-sm-1 col-xs-12">Nro</label>
+                                <div class="col-md-2 col-sm-2 col-xs-12">
+                                    <input disabled type="text" th:value="*{registro}" class="form-control input-sm"/>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label col-md-2 col-sm-2 col-xs-12">Observaciones</label>
+                                <div class="col-md-5 col-sm-5 col-xs-12">
+                                    <input disabled th:value="*{observaciones}" type="text" class="form-control input-sm" placeholder="Descripcion"/>
+                                </div>
+                                <div class="col-md-2 col-sm-2 col-xs-12">
+                                    <select disabled class="form-control input-sm" th:field="*{almacenSede.sedeId}">
+                                        <option th:each="sede: ${todasSedes}" th:value="${sede.sedeId}" th:text="${sede.sigla}">
+                                            Sede
+                                        </option>
+                                    </select>
+                                </div>
+                                <label class="control-label col-md-1 col-sm-1 col-xs-12">Fecha</label>
+                                <div class="col-md-2 col-sm-2 col-xs-12">
+                                    <div class="input-group date">
+                                        <input disabled th:field="*{fecha}" type="text" class="form-control input-sm" id="datepicker-ingreso"/>
+                                    </div>
+                                </div>
+                            </div>
+                            <!--<div class="form-group" align="center">
+                                <div class="col-md-12 col-sm-12 col-xs-12">
+                                    th:id="submit-comprobante"
+                                    <button type="submit" name="guardarComp" class="btn btn-success ">Aceptar</button>
+                                </div>
+                            </div>-->
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row" th:id="select-grupo-productos">
+        <div class="col-md-4 col-sm-4 col-xs-12">
+            <div class="x_panel">
+                <div class="x_title">
+                    <h2>Catalogo</h2>
+                    <div class="clearfix"></div>
+                </div>
+                <div class="x_content">
+                    <!--<select class="form-control" th:id="select-catalogo" th:size="5"> </select>-->
+                   <select th:id="select-catalogo" class="form-control" size="3">
+                        <option value="none" selected>SELECCIONE</option>
+                        <option th:each="catalogo: ${todosCatalogos}" th:value="${catalogo.catalogoId}" th:text="${catalogo.catalogo}">
+                            Categoria
+                        </option>
+                    </select>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4 col-sm-4 col-xs-12">
+            <div class="x_panel">
+                <div class="x_title">
+                    <h2>Categoria</h2>
+                    <div class="clearfix"></div>
+                </div>
+                <div class="x_content">
+                    <select class="form-control" th:id="select-categoria" size="3"></select>
+                </div>
+            </div>
+        </div>
+
+        <div id="div_tabla_productos" class="col-md-12 col-sm-12 col-xs-12">
+            <div class="x_panel">
+                <div class="x_title">
+                    <h2>Productos</h2>
+                    <!--<ul class="nav navbar-right panel_toolbox">
+                        <li>
+                            <button id="btn-nuevo-producto" class="btn btn-success">
+                                <i class="fa fa-plus"> Nuevo Producto</i></button>
+                        </li>
+                    </ul>-->
+                    <div class="clearfix"></div>
+                </div>
+                <!--<div class="col-md-6 col-sm-6 col-xs-12">
+                    <div class="x_panel">
+                        <div class="x_title">
+                            <h2>Catalogo</h2>
+                            <div class="clearfix"></div>
+                        </div>
+                        <div class="x_content">
+                            <select th:id="select-catalogo" class="form-control input-sm" th:size="1">
+                                <option th:each="catalogo: ${todosCatalogos}" th:value="${catalogo.catalogoId}" th:text="${catalogo.catalogo}">
+                                    Categoria
+                                </option>
+                            </select>
+                        </div>
+                    </div>
+                </div>-->
+                <!--<div class="col-md-6 col-sm-6 col-xs-12">
+                    <div class="x_panel">
+                        <div class="x_title">
+                            <h2>Categoria</h2>
+                            <div class="clearfix"></div>
+                        </div>
+                        <div class="x_content">
+                            <select class="form-control input-sm" th:id="select-categoria" th:size="1"></select>
+                        </div>
+                    </div>
+                </div>-->
+                <div class="x_content">
+                    <div class="table-responsive"
+                         style="padding:2px;border-style: solid; border-width:thin; border-radius: 4px;border-color: #333333">
+                        <table id="tabla-productos" class = "display compact" >
+                            <thead>
+                            <tr>
+                                <th></th>
+                                <th>ID</th>
+                                <th>CODIGO</th>
+                                <th>PRODUCTO</th>
+                                <th>PRESENTACION</th>
+                                <th>MARCA</th>
+                                <th>ACCIONES</th>
+                            </tr>
+                            </thead>
+
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!------------------------------------------------PRODUCTOS INGRESADOS---------------------------------------------->
+    <div class="row">
+        <div class="col-md-12 col-sm-12 col-xs-12">
+            <div class="x_panel">
+                <div class="x_title">
+                    <h2>Productos Ingresando</h2>
+                    <div class="clearfix"></div>
+                </div>
+                <div class="x_content">
+                    <div class="table-responsive">
+                        <table class="table table-hover table-condensed">
+                            <thead>
+                                <tr>
+                                    <th></th>
+                                    <th>PRODUCTO</th>
+                                    <th>PRESENTACION</th>
+                                    <th>MARCA</th>
+                                    <th>CANTIDAD</th>
+                                    <th>COSTO TOTAL</th>
+                                    <th>COSTO UNITARIO</th>
+
+                                    <th>ACCIONES</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr th:each="ingreso : ${listaProductos}">
+                                    <td th:text="${ingresoStat.count}"></td>
+                                    <td th:text="${ingreso.almacenProducto.producto}"></td>
+                                    <td th:text="${ingreso.almacenProducto.caracteristica+' '+ingreso.almacenProducto.almacenUnidad.unidadMedida}"></td>
+                                    <td th:text="${ingreso.almacenProducto.marca}"></td>
+                                    <td th:text="${ingreso.cantidad}"></td>
+                                    <td th:text="${ingreso.costoTotal}"></td>
+                                    <td th:text="${ingreso.costoUnitario}"></td>
+                                    <td>
+                                    <div class="btn-group btn-group-xs" role="group">
+                                        <a href="#" class="btn-ver btn btn-default" value="">Ver</a>
+                                        <a href="" data-toggle="modal" data-target="#modalCodigoBarras" class="btn-ingreso btn btn-default" value="">Reg. Codigo</a>
+                                    </div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!------------------------------------------------MODALs Nuevo Producto---------------------------------------------->
+    <!--<div id="modalNuevoProducto" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span>
+                    </button>
+                    <h4 class="modal-title">Nuevo Producto</h4>
+                </div>
+                <form id="form-nuevo-producto" class="form-horizontal" action="get_action()" th:object="${newAlmacenProducto}" method="post">
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <label class="control-label col-md-2 col-sm-2 col-xs-12">Categoria</label>
+                        &lt;!&ndash;<input th:id="nuevo-producto-select" type="text" th:field="*{almacenCategoria.categoriaId}" class="form-control" /> &ndash;&gt;
+                            <div class="col-md-10 col-sm-10 col-xs-12">
+                                <select th:id="nuevo-producto-select" class="form-control" th:field="*{almacenCategoria.categoriaId}">
+                                    <option th:each="categoria: ${todasCategorias}" th:value="${categoria.categoriaId}" th:text="${categoria.categoria}">
+                                        Categoria
+                                    </option>
+                                </select>
+                            </div>
+                            <div class="col-md-10 col-sm-10 col-xs-12">
+                                <select th:id="nuevo-producto-select" class="form-control" th:field="*{almacenCategoria.categoriaId}">
+                                    <option th:each="categoria: ${todasCategorias}" th:value="${categoria.categoriaId}" th:text="${categoria.categoria}">
+                                        Categoria
+                                    </option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-md-2 col-sm-2 col-xs-12">Producto</label>
+                            <div class="col-md-10 col-sm-10 col-xs-12">
+                                <input type="text" th:field="*{producto}" class="form-control" placeholder="Nombre del Producto">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-md-2 col-sm-2 col-xs-12">Codigo</label>
+                            <div class="col-md-4 col-sm-4 col-xs-12">
+                                <input type="text" th:field="*{codigo}" class="form-control" placeholder="Codigo del Producto">
+                            </div>
+                            <label class="control-label col-md-2 col-sm-2 col-xs-12">Marca</label>
+                            <div class="col-md-4 col-sm-4 col-xs-12">
+                                <input type="text" th:field="*{marca}" class="form-control" placeholder="Marca del Producto">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-md-2almacenUnidadol-xs-12">Precio a la Venta</label>
+                     almacenUnidad class="col-md-4 col-sm-4 calmacenUnidad almacenUnidad              almacenUnidadtalmacenUnidad"almacenUnidad*{precio}" class="form-control" placeholder="Cantidad de Ingreso a Almacenes">
+                            </div>
+                            <label class="control-label col-md-2 col-sm-2 col-xs-12">Oferta</label>
+                            <div class="col-md-4 col-sm-4 col-xs-12">
+                                <input type="text" th:field="*{oferta}" class="form-control" placeholder="Costo Total del Producto al Ingreso a Almacenes">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-md-2 col-sm-2 col-xs-12">Unidad</label>
+                            <div class="col-md-4 col-sm-4 col-xs-12">
+                                <select class="form-control" th:field="*{utilsUnidad}">
+                                    <option th:each="utilsUnidad: ${unidades}" th:value="${utilsUnidad.utilsUnidad}" th:text="${utilsUnidad.utilsUnidad utilsUnidad.abreviatura}">
+                                        Categoria
+                                    </option>
+                                </select>
+                            </div>
+                            <label class="control-label col-md-2 col-sm-2 col-xs-12">Caracteristica</label>
+                            <div class="col-md-4 col-sm-4 col-xs-12">
+                                <input type="text" th:field="*{caracteristica}" class="form-control" placeholder="Caracteristica, ej. 300 g, 6x500ml">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-md-2 col-sm-2 col-xs-12">Descripcion</label>
+                            <div class="col-md-10 col-sm-10 col-xs-12">
+                                <textarea type="text" th:field="*{descripcion}" class="form-control" placeholder="Descripcion del Producto"></textarea>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-md-2 col-sm-2 col-xs-12">Estado</label>
+                            <div class="col-md-10 col-sm-10 col-xs-12">
+                                <div class="btn-group" data-toggle="buttons">
+                                    <label class="btn btn-default" data-toggle-class="btn-primary" data-toggle-passive-class="btn-default">
+                                        <input type="radio" th:field="*{estado}" th:value="1" class="form-control"  disabled="disabled" > Activo
+                                    </label>
+                                    <label class="btn btn-default" data-toggle-class="btn-primary" data-toggle-passive-class="btn-default">
+                                        <input type="radio" th:field="*{estado}" th:value="0" class="form-control" checked disabled="disabled"> Inactivo
+                                    </label>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
+                        <button type="submit" class="btn btn-primary" >Guardar</button>
+                    </div>
+                </form>
+
+            </div>
+        </div>
+    </div>-->
+
+
+
+    <!------------------------------------------------MODALs Nuevo Ingreso---------------------------------------------->
+    <div id="modalNuevoIngreso" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span>
+                    </button>
+                    <h4 class="modal-title">Ingreso de Producto a Almacenes</h4>
+                </div><!--action="get_action()"-->
+                <form id="form-nuevo-ingreso" class="form-horizontal" th:action="@{/ingreso/comprobante/guardar}"  th:object="${newIngresoProducto}" method="post">
+                    <div class="modal-body">
+                        <div style="border:1px solid #e5e5e5; padding:10px 0px 04px 0px; ">
+                            <input type="hidden" th:field="*{almacenProducto.productoId}" class="form-control" th:id="productoIngresoId"/>
+                            <input type="hidden" id="almacenComprobante.comprobanteId" name="almacenComprobante.comprobanteId" class="form-control" th:value="${Comprobante.comprobanteId}" />
+
+                            <div class="form-group">
+                                <label class="control-label col-md-2 col-sm-2 col-xs-12">CANTIDAD</label>
+                                <div class="col-md-2 col-sm-2 col-xs-12">
+                                    <input id="ingreso-cantidad" type="text" th:field="*{cantidad}" class="form-control" placeholder="Cantidad Ingreso"/>
+                                </div>
+                                <label class="control-label col-md-2 col-sm-2 col-xs-12">PORCENTAJE</label>
+                                <div class="col-md-2 col-sm-2 col-xs-12">
+                                    <select th:id="select-catalogo" class="form-control" >
+                                        <option th:each="catalogo: ${todosCatalogos}" th:value="${catalogo.catalogoId}" th:text="${catalogo.catalogo}">
+                                            Porcentaje
+                                        </option>
+                                    </select>
+
+                                </div>
+                                <div class="col-md-2 col-sm-2 col-xs-12">
+
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label col-md-2 col-sm-2 col-xs-12">COSTO TOTAL</label>
+                                <div class="col-md-2 col-sm-2 col-xs-12">
+                                    <input id="ingreso-costo-total" type="text" th:field="*{costoTotal}" class="form-control" placeholder="Costo Total"/>
+                                </div>
+                                <label class="control-label col-md-2 col-sm-2 col-xs-12">COSTO UNITARIO</label>
+                                <div class="col-md-2 col-sm-2 col-xs-12">
+                                    <input id="ingreso-costo-unitario" type="text" th:field="*{costoUnitario}" class="form-control" placeholder="Costo Unitario"/>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label col-md-2 col-sm-2 col-xs-12">OBSERVACIONES</label>
+                                <div class="col-md-10 col-sm-10 col-xs-12">
+                                    <input type="text" th:field="*{descripcion}" class="form-control" placeholder="Descripcion/Observaciones"/>
+                                </div>
+                            </div>
+                        </div>
+                        <table class="table table-condensed">
+                            <thead></thead>
+                            <tbody>
+                            <tr>
+                                <td colspan="5" style="background:#EAEAEA;">PRODUCTO</td>
+                            </tr>
+                            <tr>
+                                <td rowspan="11" align="center">
+                                    <img id="ingreso-producto-imagen" class="center-block img-thumbnail" alt="" height="150" width="150">
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>NOMBRE:</td>
+                                <td colspan="3">
+                                    <b id="ingreso-producto-nombre" style="text-transform:uppercase;"></b>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>CODIGO:</td>
+                                <td><b id="ingreso-producto-codigo"></b></td>
+                                <td>MARCA:</td>
+                                <td><b id="ingreso-producto-marca"></b></td>
+                            </tr>
+                            <tr>
+                                <td>PRECIO:</td>
+                                <td><b id="ingreso-producto-precio"></b></td>
+                                <td>OFERTA:</td>
+                                <td><b id="ingreso-producto-oferta"></b></td>
+                            </tr>
+                            <tr>
+                                <td>UNIDAD:</td>
+                                <td><b id="ingreso-producto-unidad"></b></td>
+                                <td>CARACTERISTICA:</td>
+                                <td><b id="ingreso-producto-caracteristica"></b></td>
+                            </tr>
+                            <tr>
+                                <td>DESCRIPCION:</td>
+                                <td colspan="3"><b id="ingreso-producto-descripcion"></b></td>
+                            </tr>
+                            <tr>
+                                <td colspan="4"  style="background:#EAEAEA;">ALMACENES</td>
+                            </tr>
+                            <tr>
+                                <td>ESTADO:</td>
+                                <td><b id="ingreso-producto-estado"></b></td>
+                                <td>PORCENTAJE:</td>
+                                <td><b id="ingreso-producto-porcentaje"></b>%</td>
+                            </tr>
+                            <tr>
+                                <td>CANTIDAD ALMACENES:</td>
+                                <td colspan="3"><b id="ingreso-producto-cantidad"></b>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><small>REGISTRO EN EL SISTEMA:</small></td>
+                                <td colspan="3">
+                                    <b><small id="ingreso-producto-sistema"></small>
+                                        <small> - ID:</small>
+                                        <small id="ingreso-producto-id"></small></b>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>USUARIO:</td>
+                                <td colspan="3"><b id="ingreso-producto-usuario"></b></td>
+                            </tr>
+                            </tbody>
+                        </table>
+
+
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
+                        <button type="submit" name="guardarProducto" class="btn btn-primary" >Guardar</button>
+                    </div>
+                </form>
+
+            </div>
+        </div>
+    </div>
+
+    <!-------------------------------------------------------MODALs VER Producto---------------------------------------------------->
+    <div id="modalVerProducto" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span>
+                    </button>
+                    <h4 class="modal-title">Detalle Producto</h4>
+                </div>
+                <div class="modal-body">
+                    <table class="table table-condensed">
+                        <thead></thead>
+                        <tbody>
+                        <tr>
+                            <td colspan="5" style="background:#EAEAEA;">PRODUCTO</td>
+                        </tr>
+                        <tr>
+                            <td rowspan="11" align="center">
+                                <img id="ver-producto-imagen" class="center-block img-thumbnail" alt="" height="250" width="250">
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>NOMBRE:</td>
+                            <td colspan="3">
+                                <b id="ver-producto-nombre" style="text-transform:uppercase;"></b>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>CODIGO:</td>
+                            <td><b id="ver-producto-codigo"></b></td>
+                            <td>MARCA:</td>
+                            <td><b id="ver-producto-marca"></b></td>
+                        </tr>
+                        <tr>
+                            <td>PRECIO:</td>
+                            <td><b id="ver-producto-precio"></b></td>
+                            <td>OFERTA:</td>
+                            <td><b id="ver-producto-oferta"></b></td>
+                        </tr>
+                        <tr>
+                            <td>UNIDAD:</td>
+                            <td><b id="ver-producto-unidad"></b></td>
+                            <td>CARACTERISTICA:</td>
+                            <td><b id="ver-producto-caracteristica"></b></td>
+                        </tr>
+                        <tr>
+                            <td>DESCRIPCION:</td>
+                            <td colspan="3"><b id="ver-producto-descripcion"></b></td>
+                        </tr>
+                        <tr>
+                            <td colspan="4"  style="background:#EAEAEA;">ALMACENES</td>
+                        </tr>
+                        <tr>
+                            <td>ESTADO:</td>
+                            <td colspan="3"><b id="ver-producto-estado"></b></td>
+                        </tr>
+                        <tr>
+                            <td>CANTIDAD:</td>
+                            <td colspan="3"><b id="ver-producto-cantidad"></b>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><small>REGISTRO EN EL SISTEMA:</small></td>
+                            <td colspan="3">
+                                <b><small id="ver-producto-sistema"></small>
+                                    <small> - ID:</small>
+                                    <small id="ver-producto-id"></small></b>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>USUARIO:</td>
+                            <td colspan="3"><b id="ver-producto-usuario"></b></td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Aceptar</button>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <!-------------------------------------------------------MODALs Ingreso CODIGO BARRAS ----------------------------------------------->
+    <div id="modalCodigoBarras" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span>
+                    </button>
+                    <h4 class="modal-title">Detalle Producto</h4>
+                </div>
+                <div class="modal-body">
+                    <table class="table table-condensed">
+                        <thead></thead>
+                        <tbody>
+                        <tr>
+                            <td colspan="5" style="background:#EAEAEA;">PRODUCTO</td>
+                        </tr>
+                        <tr>
+                            <td rowspan="11" align="center">
+                                <img id="ver-producto-imagen" class="center-block img-thumbnail" alt="" height="250" width="250">
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>NOMBRE:</td>
+                            <td colspan="3">
+                                <b id="ver-producto-nombre" style="text-transform:uppercase;"></b>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>CODIGO:</td>
+                            <td><b id="ver-producto-codigo"></b></td>
+                            <td>MARCA:</td>
+                            <td><b id="ver-producto-marca"></b></td>
+                        </tr>
+                        <tr>
+                            <td>PRECIO:</td>
+                            <td><b id="ver-producto-precio"></b></td>
+                            <td>OFERTA:</td>
+                            <td><b id="ver-producto-oferta"></b></td>
+                        </tr>
+                        <tr>
+                            <td>UNIDAD:</td>
+                            <td><b id="ver-producto-unidad"></b></td>
+                            <td>CARACTERISTICA:</td>
+                            <td><b id="ver-producto-caracteristica"></b></td>
+                        </tr>
+                        <tr>
+                            <td>DESCRIPCION:</td>
+                            <td colspan="3"><b id="ver-producto-descripcion"></b></td>
+                        </tr>
+                        <tr>
+                            <td colspan="4"  style="background:#EAEAEA;">ALMACENES</td>
+                        </tr>
+                        <tr>
+                            <td>ESTADO:</td>
+                            <td colspan="3"><b id="ver-producto-estado"></b></td>
+                        </tr>
+                        <tr>
+                            <td>CANTIDAD:</td>
+                            <td colspan="3"><b id="ver-producto-cantidad"></b>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><small>REGISTRO EN EL SISTEMA:</small></td>
+                            <td colspan="3">
+                                <b><small id="ver-producto-sistema"></small>
+                                    <small> - ID:</small>
+                                    <small id="ver-producto-id"></small></b>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>USUARIO:</td>
+                            <td colspan="3"><b id="ver-producto-usuario"></b></td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Aceptar</button>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+</div>
+
+
+</body>
+</html>

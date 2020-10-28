@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      data-layout-decorate="~{fragments/layout}">
+
+<head>
+    <meta charset="UTF-8"/>
+    <title>Almacen Nuevo Ingreso</title>
+</head>
+<body>
+<div class="right_col" role="main" data-layout-fragment="content">
+    <!--<div class="page-title">
+        <div class="title_left">
+            <h3>Ingreso de Producto a Almacenes</h3>
+        </div>
+    </div>-->
+    <div class="row">
+        <div class="col-md-12 col-sm-12 col-xs-12">
+            <div class="x_panel">
+                <div class="x_title">
+                    <h2>Comprobante de Ingreso</h2>
+                    <div class="clearfix"></div>
+                </div>
+                <div class="x_content">
+                    <div th:fragment="form-comprobante" xmlns:th="www.thymeleaf.org" th:remove="tag">
+                        <form class="form-horizontal" th:action="@{/ingreso/comprobante/guardar}" th:object="${AlmacenComprobante}" method="post">
+                            <div class="form-group">
+                                <!--<input type="text" name="comprobanteId" th:value="${comprobanteId}"/>-->
+                                <label class="control-label col-md-2 col-sm-2 col-xs-12">Proveedor</label>
+                                <div class="col-md-3 col-sm-3 col-xs-12">
+                                    <input th:field="*{proveedor}" th:value="${proveedor}" type="text" class="form-control input-sm" placeholder="Proveedor"/>
+                                </div>
+                                <div class="col-md-2 col-sm-2 col-xs-12">
+                                    <select class="form-control input-sm" th:field="*{almacenDocumento.documentoId}">
+                                        <option th:each="documento: ${todosDocumentos}" th:value="${documento.documentoId}" th:text="${documento.documento}">
+                                            Documento
+                                        </option>
+                                    </select>
+                                </div>
+                                <div class="col-md-2 col-sm-2 col-xs-12">
+                                    <input th:field="*{nro_documento}" type="text"  th:text="${nro_documento}" class="form-control input-sm" placeholder="Nro Documento"/>
+                                </div>
+
+                                <label class="control-label col-md-1 col-sm-1 col-xs-12">Nro</label>
+                                <div class="col-md-2 col-sm-2 col-xs-12">
+                                    <input disabled type="text" class="form-control input-sm"/>
+                                </div>
+
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label col-md-2 col-sm-2 col-xs-12">Observaciones</label>
+                                <div class="col-md-5 col-sm-5 col-xs-12">
+                                    <input th:field="*{observaciones}" id="observaciones" type="text" class="form-control input-sm" placeholder="Descripcion"/>
+                                </div>
+                                <div class="col-md-2 col-sm-2 col-xs-12">
+                                    <select class="form-control input-sm" th:field="*{almacenSede.sedeId}">
+                                        <option th:each="sede: ${todasSedes}" th:value="${sede.sedeId}" th:text="${sede.sigla}">
+                                            Sede
+                                        </option>
+                                    </select>
+                                </div>
+                                <label class="control-label col-md-1 col-sm-1 col-xs-12">Fecha</label>
+                                <div class="col-md-2 col-sm-2 col-xs-12">
+                                    <div class="input-group date">
+                                        <input th:field="*{fecha}" type="text" class="form-control input-sm" id="datepicker-ingreso"/>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group" align="center">
+                                <div class="col-md-12 col-sm-12 col-xs-12">
+                                    <!--th:id="submit-comprobante"-->
+                                    <button type="submit" name="guardarCompNuevo" class="btn btn-success ">Aceptar</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+</body>
+</html>
